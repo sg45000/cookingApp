@@ -7,13 +7,24 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="recipe")
-public class Recipe {
+@Table(name="recipes")
+
+@NamedQueries({
+    @NamedQuery(name="getAllRecipes",query="SELECT r FROM Recipes AS r ORDER BY r.recipe_id DESC")
+
+
+})
+public class Recipes {
 
     @Id
+    @OneToMany(mappedBy="recipe_id")
     @Column(name="recipe_id" ,nullable=false)
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer recipe_id;
@@ -21,6 +32,7 @@ public class Recipe {
     @Column(name="name",nullable=false)
     private String name;
 
+    @Lob
     @Column(name="how_to" ,length=500)
     private String how_to;
 
