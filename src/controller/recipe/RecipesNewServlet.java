@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.MaterialsType;
 import util.DBUtil;
 import util.GetMaterialsUtil;
 
@@ -36,7 +35,7 @@ public class RecipesNewServlet extends HttpServlet {
 	    EntityManager em =DBUtil.createEM();
 
 	    GetMaterialsUtil.getMaterials(em, request);
-	    request.setAttribute("types", MaterialsType.TYPES);
+
 	    String _token = request.getSession().getId();
 	    request.setAttribute("_token", _token);
 	    em.close();

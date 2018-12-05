@@ -126,6 +126,7 @@ public class RecipesCreateServlet extends HttpServlet {
                 request.setAttribute("name", name);
                 request.setAttribute("how_to", how_to);
                 request.setAttribute("time", time);
+                request.setAttribute("_token", request.getSession().getId());
                 GetMaterialsUtil.getMaterials(em, request);
                 em.getTransaction().rollback();
                 em.close();
