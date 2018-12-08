@@ -7,10 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="box")
+@NamedQueries({
+    @NamedQuery(name="getMyMaterials" , query="SELECT m FROM Box AS b,Materials AS m WHERE m.material_id=b.material_id AND b.user_id=:user_id" ),
+    @NamedQuery(name="getMyBox" ,query="SELECT b FROM Box AS b WHERE b.material_id=:material_id"),
+    @NamedQuery(name="checkBoxMaterial", query="SELECT b FROM Box AS b WHERE b.material_id=:material_id AND b.user_id=:user_id")
+})
 public class Box {
 
     @Id

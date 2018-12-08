@@ -22,6 +22,7 @@ public class GetMaterialsUtil {
 
             typeMate.setTypeId(type+"_id");
             typeMate.setTypeName(type);
+            typeMate.setTypeNameJps(type);//日本語情報を入れられるように拡張する。
             typeMate.setTypeQuantity(type+"_quantity");
             typeMate.setTypeMate(type+"_materials");
             typeMate.setMateList(em.createNamedQuery("getAllMaterials", Materials.class)

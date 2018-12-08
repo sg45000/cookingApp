@@ -5,11 +5,20 @@ import java.util.List;
 public class TypeMaterials {
 
     private String typeName;
+    private String typeNameJps;
     private String typeId;
     private String typeMate;
     private String typeQuantity;
     private List<Materials> mateList;
 
+
+
+    public String getTypeNameJps() {
+        return typeNameJps;
+    }
+    public void setTypeNameJps(String typeNameJps) {
+        this.typeNameJps = typeNameJps;
+    }
     public String getTypeName() {
         return typeName;
     }

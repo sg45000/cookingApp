@@ -5,13 +5,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 
 @Entity
 
 @Table(name="Recipe_Materials")
+@NamedQueries({
+    @NamedQuery(name="getMaterialsOfRecipe", query="SELECT rm FROM Recipe_Materials AS rm WHERE rm.recipe_id = :recipe_id"),
+    @NamedQuery(name="countMaterialsOfRecipe",query="SELECT count(rm) FROM Recipe_Materials AS rm WHERE rm.recipe_id = :recipe_id"),
+    @NamedQuery(name="getMaterials",query="SELECT m FROM Materials AS m, Recipe_Materials AS rm WHERE m.material_id = rm.material_id AND rm.recipe_id=:recipe_id ")
 
+})
 
 public class Recipe_Materials {
 
@@ -29,7 +36,7 @@ public class Recipe_Materials {
     private Integer material_id;
 
     @Column(name="quantity")
-    private String quantity;
+    private Double quantity;
 
     public Integer getId() {
         return id;
@@ -55,11 +62,11 @@ public class Recipe_Materials {
         this.material_id = material_id;
     }
 
-    public String getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 

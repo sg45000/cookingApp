@@ -1,4 +1,4 @@
-package controller.recipe;
+package controller.box;
 
 import java.io.IOException;
 
@@ -14,16 +14,16 @@ import util.DBUtil;
 import util.GetMaterialsUtil;
 
 /**
- * Servlet implementation class RecipesNewServlet
+ * Servlet implementation class BoxNewServlet
  */
-@WebServlet("/recipes/new")
-public class RecipesNewServlet extends HttpServlet {
+@WebServlet("/box/new")
+public class BoxNewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RecipesNewServlet() {
+    public BoxNewServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,13 +34,12 @@ public class RecipesNewServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    EntityManager em =DBUtil.createEM();
 
-	    GetMaterialsUtil.getMaterials(em, request);
+        GetMaterialsUtil.getMaterials(em, request);
+        request.setAttribute("_token", request.getSession().getId());
+        em.close();
 
-	    request.setAttribute("_token", request.getSession().getId());
-	    em.close();
-
-	    RequestDispatcher rd= request.getRequestDispatcher("/WEB-INF/views/recipes/new.jsp");
-		rd.forward(request, response);
+        RequestDispatcher rd= request.getRequestDispatcher("/WEB-INF/views/box/new.jsp");
+        rd.forward(request, response);
 	}
 
 }

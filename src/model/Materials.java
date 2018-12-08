@@ -7,10 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
+
 
 @Entity
 @Table(name="materials")
+@NamedQueries({
+    @NamedQuery(name="getAllMaterials", query="SELECT mm FROM Materials AS mm WHERE mm.type = :type")
+})
 public class Materials {
 
     @Id
@@ -20,6 +27,9 @@ public class Materials {
 
     @Column(name="name" ,nullable=false)
     private String name;
+
+    @Column(name="type" ,nullable=false)
+    private String type;
 
     @Column(name="unit" ,nullable=false)
     private String unit;
@@ -31,7 +41,7 @@ public class Materials {
     private Timestamp updated_at;
 
     @Column(name="use_limit")
-    private Integer use_limit;
+    private String use_limit;
 
     public Integer getMaterial_id() {
         return material_id;
@@ -47,6 +57,14 @@ public class Materials {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getUnit() {
@@ -73,13 +91,14 @@ public class Materials {
         this.updated_at = updated_at;
     }
 
-    public Integer getUse_limit() {
+    public String getUse_limit() {
         return use_limit;
     }
 
-    public void setUse_limit(Integer use_limit) {
+    public void setUse_limit(String use_limit) {
         this.use_limit = use_limit;
     }
+
 
 
 

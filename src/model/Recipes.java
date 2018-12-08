@@ -10,21 +10,21 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="recipes")
 
 @NamedQueries({
-    @NamedQuery(name="getAllRecipes",query="SELECT r FROM Recipes AS r ORDER BY r.recipe_id DESC")
+    @NamedQuery(name="getAllRecipes",query="SELECT r FROM Recipes AS r ORDER BY r.recipe_id DESC"),
+    @NamedQuery(name="getCountRecipes",query="SELECT count(r) FROM Recipes AS r "),
+    @NamedQuery(name="getLastRecipeId",query="SELECT max(r.recipe_id) FROM Recipes AS r ")
 
 
 })
 public class Recipes {
 
     @Id
-    @OneToMany(mappedBy="recipe_id")
     @Column(name="recipe_id" ,nullable=false)
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer recipe_id;
@@ -33,7 +33,7 @@ public class Recipes {
     private String name;
 
     @Lob
-    @Column(name="how_to" ,length=500)
+    @Column(name="how_to" ,length=500 ,nullable=false)
     private String how_to;
 
     @Column(name="created_at" ,nullable=false)
@@ -41,6 +41,15 @@ public class Recipes {
 
     @Column(name="updated_at" ,nullable=false)
     private Timestamp updated_at;
+
+    @Column(name="image_name")
+    private String image_name;
+
+    @Column(name="time")
+    private String time;
+
+    @Column(name="how_many")
+    private String how_many;
 
     public Integer getRecipe_id() {
         return recipe_id;
@@ -80,6 +89,30 @@ public class Recipes {
 
     public void setUpdated_at(Timestamp updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public String getImage_name() {
+        return image_name;
+    }
+
+    public void setImage_name(String image_name) {
+        this.image_name = image_name;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getHow_many() {
+        return how_many;
+    }
+
+    public void setHow_many(String how_many) {
+        this.how_many = how_many;
     }
 
 
