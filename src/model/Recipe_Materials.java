@@ -15,7 +15,9 @@ import javax.persistence.Table;
 @Table(name="Recipe_Materials")
 @NamedQueries({
     @NamedQuery(name="getMaterialsOfRecipe", query="SELECT rm FROM Recipe_Materials AS rm WHERE rm.recipe_id = :recipe_id"),
-    @NamedQuery(name="countMaterialsOfRecipe",query="SELECT count(rm) FROM Recipe_Materials AS rm WHERE rm.recipe_id = :recipe_id")
+    @NamedQuery(name="countMaterialsOfRecipe",query="SELECT count(rm) FROM Recipe_Materials AS rm WHERE rm.recipe_id = :recipe_id"),
+    //TopIndexServlet
+    @NamedQuery(name="searchRecipe" ,query="SELECT rm FROM Recipe_Materials AS rm WHERE rm.recipe_id=:recipe_id")
 
 
 })

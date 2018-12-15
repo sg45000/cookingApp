@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
+<div id="recipe_form" class="clearfix">
 <c:forEach var="type" items="${typeMate}">
-<div class="${type.typeMate}">
+<div class="${type.typeMate} shadow_effect">
 <span>${type.typeName}</span>
     <c:forEach var="mate" items="${type.mateList}">
 
@@ -19,6 +19,7 @@
     </c:forEach>
     </div>
 </c:forEach>
+</div>
 <script>
     function connecttext(id, ischecked ) {
         if( ischecked == true ) {

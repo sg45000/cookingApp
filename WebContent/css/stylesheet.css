@@ -70,3 +70,40 @@ td{
     border:solid 3px black;
     padding: 10px;
 }
+
+
+.clearfix::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.meat_materials{
+	float:left;
+	width:25%;
+	background-color:#ffd5ec;
+	padding:15px 0px;
+
+}
+.fish_materials{
+	float:left;
+	width:25%;
+	padding:15px 0px;
+	background-color:#c2eeff;
+}
+.vegetable_materials{
+	float:left;
+	width:25%;
+	padding:15px 0px;
+	background-color:#cbffd3;
+}
+.condiment_materials{
+	float:right;
+	width:25%;
+	padding:15px 0px;
+	background-color:#ffffdd;
+}
+.shadow_effect{
+-webkit-box-shadow: 0 10px 6px -6px #777;
+       -moz-box-shadow: 0 10px 6px -6px #777;
+            box-shadow: 0 10px 6px -6px #777;
+}

@@ -22,9 +22,9 @@
     <textarea name="how_to">${how_to}</textarea>
 </div>
 
-
+<div id="recipe_form" class="clearfix">
 <c:forEach var="type" items="${typeMate}">
-<div class="${type.typeMate}">
+<div class="${type.typeMate} shadow_effect">
 <span>${type.typeName}</span>
 	<c:forEach var="mate" items="${type.mateList}">
 
@@ -33,13 +33,14 @@
 				<input type="checkbox" name="${type.typeId}" value="${mate.material_id}"
 					onclick='connecttext("${mate.material_id}",this.checked);'>
 				<span>${mate.name}</span>
-				<span>量<input type="text" name="${type.typeQuantity}" id="${mate.material_id}" value=""  disabled="disabled"></span>
+				<span><input type="text" name="${type.typeQuantity}" id="${mate.material_id}" value=""  disabled="disabled"></span>
 				<span>${mate.unit}</span>
 			</div>
 
 	</c:forEach>
 	</div>
 </c:forEach>
+</div>
 <script>
 	function connecttext(id, ischecked ) {
 		if( ischecked == true ) {
