@@ -6,10 +6,7 @@
         <div class="title">
         </div>
         <div>
-        <form method="post" action="<c:url value='/recipes/destroy'/>">
-            <input type="text" name="recipe_id">
-            <button type="submit"></button>
-        </form>
+
 
         </div>
     </div>

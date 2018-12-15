@@ -31,7 +31,7 @@ public class UserNewServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    request.setAttribute("_token", request.getSession().getId());
 
-	    RequestDispatcher rd =request.getRequestDispatcher("/WEB-INF/views/users/new.jsp");
+	    RequestDispatcher rd =request.getRequestDispatcher("/WEB-INF/views/login/login.jsp");
         rd.forward(request, response);
 	}
 

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -41,7 +42,7 @@ public class BoxCreateServlet extends HttpServlet {
         if(_token !=null && _token.equals(request.getSession().getId())) {
             EntityManager em = DBUtil.createEM();
             String[] types=MaterialsType.TYPES;
-            Boolean commit_flag=true;
+            int error_count=0;
 
             em.getTransaction().begin();
             for(String type: types) {
@@ -58,7 +59,7 @@ public class BoxCreateServlet extends HttpServlet {
                     }
                     if(ids.length!=count) {
                         request.setAttribute("flush", "チェックを入れた材料には、量を指定してください。");
-                        commit_flag=false;
+                        error_count++;
                         break;
                     }else {
 
@@ -90,16 +91,22 @@ public class BoxCreateServlet extends HttpServlet {
                     }
                 }
             }
+                if(error_count>0) {
+
+                    em.getTransaction().rollback();
+                    em.close();
+                    RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/box/new");
+                    rd.forward(request, response);
+                }else {
+                    em.getTransaction().commit();
+                    em.close();
+                    request.getSession().setAttribute("flush", "食材を冷蔵庫に保存しました。");
+                    response.sendRedirect(request.getContextPath()+"/top/index");
+                }
 
 
-
-
-
-                em.getTransaction().commit();
-                em.close();
-                request.getSession().setAttribute("flush", "食材を冷蔵庫に保存しました。");
         }
-        response.sendRedirect(request.getContextPath()+"/top/index");
+
 	}
 
 }

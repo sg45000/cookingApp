@@ -16,7 +16,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="materials")
 @NamedQueries({
-    @NamedQuery(name="getAllMaterials", query="SELECT mm FROM Materials AS mm WHERE mm.type = :type")
+    @NamedQuery(name="getAllMaterials", query="SELECT mm FROM Materials AS mm WHERE mm.type = :type"),
+    @NamedQuery(name="getMaterials",query="SELECT m FROM Materials AS m WHERE m.material_id = :material_id")
 })
 public class Materials {
 

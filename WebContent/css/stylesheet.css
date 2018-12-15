@@ -6,7 +6,7 @@
     color: #ffff78;
     width: 120px;
     height: 120px;
-    font-size: 21px;
+    font-size: 15px;
     line-height: 120px;
     border-radius: 50%;
     text-align: center;
@@ -17,6 +17,7 @@
     border-bottom: solid 3px #d29963;
     text-shadow: -1px -1px rgba(255, 255, 255, 0.43), 1px 1px rgba(0, 0, 0, 0.49);
     transition: .4s;
+    margin-left:30px;
 }
 .btn:active{
     -ms-transform: translateY(2px);
@@ -26,14 +27,46 @@
     border-bottom: none;
 }
 
-.recipe_table{
-border:solid 1px #3344ff;
-padding: 10px;
+body{
+	background-color:#f7f3e8;
 }
+
+.login_form{
+
+	width:50%;
+	text-align:left;
+	font-size:20px;
+	margin:20px 30px;
+    background-color:white;
+    border:solid 1px black;
+
+}
+.login_form h2{
+	margin:20px 20px;
+
+}
+
+.login_input{
+	margin:0px 30px;
+	width:200px;
+	height:20px;
+}
+
+.login_submit{
+	margin:0px 20px;
+	margin-bottom:20px;
+}
+.recipes_menu{
+    margin:30px 0px;;
+}
+
+.recipes_menu table{
+	width:800px;
+	text-align:left;
+	margin:30px;
+}
+
 td{
-    border:solid 1px #3344ff;
+    border:solid 3px black;
     padding: 10px;
-}
-h2{
-    font-size: 21px;
 }

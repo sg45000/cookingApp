@@ -1,7 +1,7 @@
-<%@page import="model.Recipes"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:import url="../../layout/app.jsp">
 	<c:param name="content">
 	   <div class="content_heading">
@@ -9,47 +9,50 @@
             <h4>${count}件</h4>
         </div>
         <div class="recipes_menu">
+            <div class="recipe_table" >
+                <table>
+                    <c:forEach var="index" items="${indexList}" varStatus="recipe">
+                        <tr><th>${index.r.name}</th><td>材料</td><td>操作</td></tr>
 
+                        <c:forEach var="material" items="${index.morList}" varStatus="row">
+                            <c:choose>
+                                <c:when test="${row.first}">
+                                    <tr>
+                                        <td rowspan="${fn:length(index.morList)}" class="recipe_img"><img src="#"></td>
+                                        <td>${material.name}&nbsp;&nbsp;${material.quantity}&nbsp;${material.unit}</td>
+                                        <td>
+                                           <a href="#" onClick="confirmCooking(document.forms[${recipe.index}]);">料理する</a>
+                                            <form method="post" action="<c:url value='/recipes/cook'/>">
+                                                    <input type="hidden" value="${_token}" name="_token"/>
+                                                    <input type="hidden" name="recipe_id" value="${index.r.recipe_id}">
+                                            </form>
 
-                <div class="recipe_table" >
-                    <table>
-                    <c:forEach var="recipe" items="${recipes}">
-                    <tr><th>${recipe.name}</th><td>材料</td><td>操作</td></tr>
-                    <% Recipes recipe=(Recipes)pageContext.getAttribute("recipe"); %>
-                    <% String recipe_id=recipe.getRecipe_id().toString();%>
-
-
-                    <c:forEach var="material" items="<%= request.getAttribute("materials_"+recipe_id) %>" varStatus="status">
-                        <c:choose>
-                            <c:when test="${status.first}">
-                                <tr>
-                                    <td rowspan="<%= (long)request.getAttribute("count_"+recipe_id) %>"><img src="#"></td>
-                                    <td>${material.name}${material.unit}</td>
-                                </tr>
-                            </c:when>
-                            <c:otherwise>
-                                <tr>
-                                    <td>${material.name}${material.unit}</td>                                </tr>
-                            </c:otherwise>
-                        </c:choose>
-
-                    </c:forEach>
-
-
+                                        </td>
+                                    </tr>
+                                </c:when>
+                                <c:otherwise>
+                                    <tr>
+                                        <td>${material.name}&nbsp;&nbsp;${material.quantity}&nbsp;${material.unit}</td>
+                                    </tr>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
                     <tr></tr>
-
-
                     </c:forEach>
-
-
-                    </table>
-                </div>
-
+                </table>
+                 <a href="<c:url value='/recipes/new'/>">レシピを登録する</a>
+            </div>
         </div>
+        <script>
+        function confirmCooking(frm){
+            if(confirm("本当に料理しますか？")){
+                frm.submit();
+            }
+        }
+        </script>
 
 
 
 
-        <a href="<c:url value='/recipes/new'/>">レシピを登録する</a>
 	</c:param>
 </c:import>

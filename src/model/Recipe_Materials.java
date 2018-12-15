@@ -15,8 +15,8 @@ import javax.persistence.Table;
 @Table(name="Recipe_Materials")
 @NamedQueries({
     @NamedQuery(name="getMaterialsOfRecipe", query="SELECT rm FROM Recipe_Materials AS rm WHERE rm.recipe_id = :recipe_id"),
-    @NamedQuery(name="countMaterialsOfRecipe",query="SELECT count(rm) FROM Recipe_Materials AS rm WHERE rm.recipe_id = :recipe_id"),
-    @NamedQuery(name="getMaterials",query="SELECT m FROM Materials AS m, Recipe_Materials AS rm WHERE m.material_id = rm.material_id AND rm.recipe_id=:recipe_id ")
+    @NamedQuery(name="countMaterialsOfRecipe",query="SELECT count(rm) FROM Recipe_Materials AS rm WHERE rm.recipe_id = :recipe_id")
+
 
 })
 

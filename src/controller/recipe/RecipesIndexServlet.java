@@ -1,6 +1,7 @@
 package controller.recipe;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,7 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.IndexRecipe;
 import model.Materials;
+import model.MaterialsOfRecipe;
 import model.Recipe_Materials;
 import model.Recipes;
 import util.DBUtil;
@@ -36,6 +39,10 @@ public class RecipesIndexServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		EntityManager em = DBUtil.createEM();
+         if(request.getSession().getAttribute("flush")!=null) {
+             request.setAttribute("flush",request.getSession().getAttribute("flush"));
+             request.getSession().removeAttribute("flush");
+         }
 
 		int page=1;
 		try {
@@ -46,33 +53,32 @@ public class RecipesIndexServlet extends HttpServlet {
 		        .setFirstResult((page-1)*10)
                 .setMaxResults(10)
                 .getResultList();
+		List<IndexRecipe> indexList = new ArrayList<IndexRecipe>();
 		for(Recipes recipe:recipes) {
+		    IndexRecipe index = new IndexRecipe();
+
 		    List<Recipe_Materials> rms=em.createNamedQuery("getMaterialsOfRecipe",Recipe_Materials.class)
             .setParameter("recipe_id", recipe.getRecipe_id()).getResultList();
-		    for(Recipe_Materials rm : rms ) {
-		        request.setAttribute("rm"+rm.getMaterial_id()+"of"+rm.getRecipe_id(), rm);
+		    List<MaterialsOfRecipe> morList = new ArrayList<MaterialsOfRecipe>();
+		    for(Recipe_Materials rm : rms) {
+		        Materials m=em.createNamedQuery("getMaterials",Materials.class)
+		                .setParameter("material_id",rm.getMaterial_id())
+		                .getSingleResult();
+		        MaterialsOfRecipe mor = new MaterialsOfRecipe(m,rm.getQuantity(),recipe.getRecipe_id());
+		        morList.add(mor);
 		    }
+	        index.setR(recipe);
+		    index.setMorList(morList);
+		    indexList.add(index);
 
 
-		    List<Materials> m=em.createNamedQuery("getMaterials",Materials.class)
-            .setParameter("recipe_id",recipe.getRecipe_id())
-            .getResultList();
-		    request.setAttribute("materials_"+recipe.getRecipe_id().toString(),m);
-
-		    long c=em.createNamedQuery("countMaterialsOfRecipe", Long.class)
-            .setParameter("recipe_id", recipe.getRecipe_id())
-            .getSingleResult();
-		    request.setAttribute("count_"+recipe.getRecipe_id().toString(),c);
 		}
-
-		long count_recipes = em.createNamedQuery("getCountRecipes", Long.class)
-		        .getSingleResult();
 
 		em.close();
 
 
-		request.setAttribute("recipes", recipes);
-		request.setAttribute("count_recipes", count_recipes);
+		request.setAttribute("indexList",indexList);
+		request.setAttribute("_token", request.getSession().getId());
 
 		if(request.getSession().getAttribute("flash")!=null) {
 		    request.setAttribute("flash", request.getSession().getAttribute("flash"));

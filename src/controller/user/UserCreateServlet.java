@@ -44,14 +44,16 @@ public class UserCreateServlet extends HttpServlet {
 		    u.setName(name);
 		    String email=request.getParameter("email");
 		    u.setEmail(email);
-		    u.setPassword(EncryptUtil.getPasswordEncrypt(request.getParameter("password"),
+		    String plain_pass=request.getParameter("plain_pass");
+		    String plain_pass_confirm =request.getParameter("plain_pass_confirm");
+		    u.setPassword(EncryptUtil.getPasswordEncrypt(plain_pass,
                     (String)this.getServletContext().getAttribute("salt"))
                     );
 		    Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             u.setCreated_at(currentTime);
             u.setUpdated_at(currentTime);
 
-            List<String> errors = UserValidator.validate(u,true);
+            List<String> errors = UserValidator.validate(u,true,plain_pass,plain_pass_confirm);
             if(errors.size()>0) {
 
              em.close();
@@ -67,6 +69,7 @@ public class UserCreateServlet extends HttpServlet {
             em.getTransaction().commit();
             em.close();
             request.getSession().setAttribute("flush", "登録が完了しました。");
+            request.getSession().setAttribute("login_user", u);
             response.sendRedirect(request.getContextPath()+"/top/index");
             }
 

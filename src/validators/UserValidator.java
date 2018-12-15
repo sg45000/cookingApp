@@ -7,13 +7,13 @@ import model.User;
 
 public class UserValidator {
 
-    static public List<String> validate(User u ,Boolean password_check_flag){
+    static public List<String> validate(User u ,Boolean password_check_flag,String plain_pass,String plain_pass_confirm){
 
         List<String> errors = new ArrayList<String>();
 
         String nameError = nameValidate(u.getName());
         String emailError = emailValidate(u.getEmail());
-        String passwordError = passwordValidate(u.getPassword(),password_check_flag);
+        String passwordError = passwordValidate(u.getPassword(),password_check_flag,plain_pass,plain_pass_confirm);
 
         if(nameError!="") {
             errors.add(nameError);
@@ -40,11 +40,12 @@ public class UserValidator {
         }
         return "";
     }
-    private static String passwordValidate(String password,Boolean password_check_flag) {
+    private static String passwordValidate(String password,Boolean password_check_flag,String plain_pass,String plain_pass_confirm) {
 
-        if(password_check_flag && (password==null || password.equals(""))) {
-            return "パスワードが入力されていません";
+        if(password_check_flag && (password==null || password.equals("")) || !plain_pass.equals(plain_pass_confirm) ) {
+            return "パスワードが正しく入力されていません";
         }
+
 
         return "";
     }

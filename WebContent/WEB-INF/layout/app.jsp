@@ -21,6 +21,8 @@
                     </div>
                 </div>
             </div>
+            <br>
+            <p>ログインユーザー:${sessionScope.login_user.name}様</p><br>
             <c:if test="${flush!=null}">
                 <div class="flush">
                     <p>${flush}</p>
@@ -36,7 +38,7 @@
             <div id="content">
                 ${param.content}
             </div>
-            <div id="footer">by kyo</div>
+            <div id="footer"></div>
         </div>
 
     </body>

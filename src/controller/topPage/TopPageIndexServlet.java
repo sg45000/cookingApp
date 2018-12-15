@@ -1,6 +1,9 @@
 package controller.topPage;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
@@ -10,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Recipe_Materials;
+import model.Recipes;
 import util.DBUtil;
 
 /**
@@ -42,8 +47,19 @@ public class TopPageIndexServlet extends HttpServlet {
 	            request.setAttribute("flush",request.getSession().getAttribute("flush"));
 	            request.getSession().removeAttribute("flush");
 	        }
-	        
-	        
+
+
+	    Map<Recipes,Recipe_Materials> rmMap =  new HashMap<Recipes,Recipe_Materials>();
+	    List<Recipe_Materials> rms= em.createNamedQuery("getRecomendRecipes", Recipe_Materials.class)
+	        .setParameter("user_id", request.getSession().getAttribute("login_user"))
+	        .getResultList();
+
+	    for(Recipe_Materials rm : rms) {
+	        Integer recipe_id = rm.getRecipe_id();
+	        Recipes r = em.find(Recipes.class, recipe_id);
+	        rmMap.put(r, rm);
+
+	    }
 
 
 	    RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/top/index.jsp");
