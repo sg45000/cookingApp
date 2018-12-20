@@ -42,7 +42,7 @@ public class BoxIndexServlet extends HttpServlet {
 	    List<Materials> materials =  em.createNamedQuery("getMyMaterials",Materials.class).setParameter("user_id",u.getUser_id() ).getResultList();
 	    List<BoxMaterials> bmList = new ArrayList<BoxMaterials>();
 	    for(Materials material: materials) {
-	        Box box= em.createNamedQuery("getMyBox", Box.class).setParameter("material_id", material.getMaterial_id()).getSingleResult();
+	        Box box= em.createNamedQuery("getMyBox", Box.class).setParameter("material_id", material.getMaterial_id()).setParameter("user_id", u.getUser_id()).getSingleResult();
 	        BoxMaterials bm = new BoxMaterials(material,box);
 	        bmList.add(bm);
 

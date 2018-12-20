@@ -1,6 +1,8 @@
 package controller.topPage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
@@ -10,6 +12,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.B_RM;
+import model.CountBoxIn;
+import model.MateQuan;
+import model.Materials;
+import model.Recipe_Materials;
+import model.Recipes;
+import model.RecomendRecipe;
+import model.User;
 import util.DBUtil;
 
 /**
@@ -42,26 +52,59 @@ public class TopPageIndexServlet extends HttpServlet {
 	            request.setAttribute("flush",request.getSession().getAttribute("flush"));
 	            request.getSession().removeAttribute("flush");
 	        }
-/*
-	    List<Box> bl=em.createNamedQuery("getUserHas", Box.class)
-	            .setParameter("user_id", request.getSession().getAttribute("login_user"))
+
+
+
+	        User u=(User)request.getSession().getAttribute("login_user");
+
+
+	        List<CountBoxIn> cbis = em.createNamedQuery("getCountBoxIn", CountBoxIn.class)
+	            .setParameter("user_id",u.getUser_id())
 	            .getResultList();
-*/
 
-/*
-	    Map<Recipes,Recipe_Materials> rmMap =  new HashMap<Recipes,Recipe_Materials>();
-	    List<Recipe_Materials> rms= em.createNamedQuery("getRecomendRecipes", Recipe_Materials.class)
-	        .setParameter("user_id", request.getSession().getAttribute("login_user"))
-	        .getResultList();
+	        List<RecomendRecipe> rrList = new ArrayList<RecomendRecipe>();
 
-	    for(Recipe_Materials rm : rms) {
-	        Integer recipe_id = rm.getRecipe_id();
-	        Recipes r = em.find(Recipes.class, recipe_id);
-	        rmMap.put(r, rm);
+	        for(CountBoxIn cbi:cbis) {
+	            RecomendRecipe rr=new RecomendRecipe();
+	            List<Recipe_Materials> rmList =em.createNamedQuery("getMaterialsOfRecipe", Recipe_Materials.class)
+	                    .setParameter("recipe_id",  cbi.getRecipe_id())
+	                    .getResultList();
 
-	    }
+	            B_RM b_rm =new B_RM();
 
-*/
+	            List<MateQuan> mqList = new ArrayList<MateQuan>();
+	            for(Recipe_Materials rm : rmList) {
+	                MateQuan mq =new MateQuan();
+	                try {
+	                     b_rm = em.createNamedQuery("getMateQuan",B_RM.class)
+	                        .setParameter("user_id", u.getUser_id())
+	                        .setParameter("recipe_id", cbi.getRecipe_id())
+	                        .setParameter("material_id", rm.getMaterial_id())
+	                        .getSingleResult();
+	                     mq.setEnough(true);
+
+	                     mq.setB_quan(b_rm.getB_quan());
+	                }catch(Exception e) {
+	                    mq.setB_quan(0.0);
+	                    mq.setEnough(false);
+	                }
+	                mq.setRm_quan(rm.getQuantity());
+	                mq.setM(em.find(Materials.class, rm.getMaterial_id()));
+	                mqList.add(mq);
+
+
+	            }
+	            Integer count_rm = rmList.size();
+	            Double ratio = (double)cbi.getCount()/count_rm;
+	            rr.setMqList(mqList);
+	            rr.setR(em.find(Recipes.class,cbi.getRecipe_id()));
+	            rr.setRatio(ratio*100.0);
+	            rrList.add(rr);
+
+	        }
+	        request.setAttribute("rrList", rrList);
+
+
 	    RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/top/index.jsp");
 	    rd.forward(request,response);
 	}

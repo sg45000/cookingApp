@@ -15,10 +15,9 @@ import javax.persistence.Table;
 @Table(name="box")
 @NamedQueries({
     @NamedQuery(name="getMyMaterials" , query="SELECT m FROM Box AS b,Materials AS m WHERE m.material_id=b.material_id AND b.user_id=:user_id" ),
-    @NamedQuery(name="getMyBox" ,query="SELECT b FROM Box AS b WHERE b.material_id=:material_id"),
+    @NamedQuery(name="getMyBox" ,query="SELECT b FROM Box AS b WHERE b.material_id=:material_id AND b.user_id = :user_id"),
     @NamedQuery(name="checkBoxMaterial", query="SELECT b FROM Box AS b WHERE b.material_id=:material_id AND b.user_id=:user_id"),
-    @NamedQuery(name="cookFromMyBox" , query="SELECT b FROM Box AS b WHERE b.material_id = :material_id AND b.user_id=:user_id"),
-    @NamedQuery(name="getUserHas", query="SELECT b FROM Box AS b WHERE b.user_id= :user_id")
+    @NamedQuery(name="cookFromMyBox" , query="SELECT b FROM Box AS b WHERE b.material_id = :material_id AND b.user_id=:user_id")
 })
 public class Box {
 
