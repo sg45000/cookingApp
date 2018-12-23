@@ -4,7 +4,7 @@
 <c:import url="../../layout/app.jsp">
     <c:param name="content">
     <div class="recomend_wrapper">
-        <div class="title">
+        <div class="#">
         <c:forEach var="rr" items="${rrList}">
             <table>
                 <tr><td>${rr.r.name}</td><td>材料 &nbsp; 材料保有率${rr.ratio}%</td></tr>
@@ -23,13 +23,19 @@
             </table>
         </c:forEach>
         </div>
-        <div>
-
-
-        </div>
     </div>
+
     <div class="box_wrapper">
-        <div class="title"></div>
+        <div class="title">
+            <h2>あなたの冷蔵庫</h2>
+        </div>
+        <table>
+             <tbody>
+               <c:forEach var="bm" items="${bmList}">
+                  <tr><td>${bm.m.name}</td><td>${bm.b.quantity} ${bm.m.unit}</td></tr>
+               </c:forEach>
+             </tbody>
+        </table>
     </div>
 
 

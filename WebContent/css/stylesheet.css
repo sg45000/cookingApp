@@ -107,3 +107,13 @@ td{
        -moz-box-shadow: 0 10px 6px -6px #777;
             box-shadow: 0 10px 6px -6px #777;
 }
+
+/* topPage */
+.recomend_wrapper{
+	float:left;
+}
+
+.box_wrapper{
+	float:left;
+	margin-left:60px;
+}

@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.B_RM;
+import model.Box;
+import model.BoxMaterials;
 import model.CountBoxIn;
 import model.MateQuan;
 import model.Materials;
@@ -41,11 +43,7 @@ public class TopPageIndexServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    //↓ログイン処理操作が完成したら。
-	    /*
-	    String _token= (String)request.getSession().getAttribute("_token");
-	    if(_token!=null && _token.equals(request.getSession().getId())) {}
-	    */
+
 	        EntityManager em = DBUtil.createEM();
 	        if(request.getSession().getAttribute("flush")!=null) {
 
@@ -104,7 +102,18 @@ public class TopPageIndexServlet extends HttpServlet {
 	        }
 	        request.setAttribute("rrList", rrList);
 
+	        //boxIndexServletからもってきた
+	        List<Materials> materials =  em.createNamedQuery("getMyMaterials",Materials.class).setParameter("user_id",u.getUser_id() ).getResultList();
+	        List<BoxMaterials> bmList = new ArrayList<BoxMaterials>();
+	        for(Materials material: materials) {
+	            Box box= em.createNamedQuery("getMyBox", Box.class).setParameter("material_id", material.getMaterial_id()).setParameter("user_id", u.getUser_id()).getSingleResult();
+	            BoxMaterials bm = new BoxMaterials(material,box);
+	            bmList.add(bm);
 
+	        }
+	        request.setAttribute("bmList",bmList);
+
+	    em.close();
 	    RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/top/index.jsp");
 	    rd.forward(request,response);
 	}
