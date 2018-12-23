@@ -18,10 +18,10 @@
                             <c:choose>
                                 <c:when test="${row.first}">
                                     <tr>
-                                        <td rowspan="${fn:length(index.morList)}" class="recipe_img"><img src="#"></td>
+                                        <td rowspan="${fn:length(index.morList)}" class="recipe_img" class="img-td"><img src="${pageContext.request.contextPath}/recipes_image/${index.r.image_name}"></td>
                                         <td>${material.name}&nbsp;&nbsp;${material.quantity}&nbsp;${material.unit}</td>
                                         <td>
-                                           <a href="#" onClick="confirmCooking(document.forms[${recipe.index}]);">料理する</a>
+                                            <a href="#" onClick="confirmCooking(document.forms[${recipe.index}]);">料理する</a>
                                             <form method="post" action="<c:url value='/recipes/cook'/>">
                                                     <input type="hidden" value="${_token}" name="_token"/>
                                                     <input type="hidden" name="recipe_id" value="${index.r.recipe_id}">

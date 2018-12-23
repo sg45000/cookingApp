@@ -11,7 +11,7 @@
                 <c:forEach var="mq" items="${rr.mqList}" varStatus="row">
                     <c:choose>
                         <c:when test="${row.first}">
-                            <tr><td rowspan="${fn:length(rr.mqList)}"><img src="#"></td>
+                            <tr><td rowspan="${fn:length(rr.mqList)}" class="img-td"><img src="${pageContext.request.contextPath}/recipes_image/${rr.r.image_name}"></td>
                             <td>${mq.m.name} &nbsp;&nbsp; ${mq.b_quan}&nbsp; / &nbsp; ${mq.rm_quan}</td>
                             </tr>
                         </c:when>

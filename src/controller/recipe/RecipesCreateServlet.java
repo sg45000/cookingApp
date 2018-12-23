@@ -6,12 +6,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +31,7 @@ import validators.RecipeValidator;
  * Servlet implementation class RecipesCreateServlet
  */
 @WebServlet("/recipes/create")
+@MultipartConfig(maxFileSize = 1048576 , location = "C:\\pleiades\\workspace\\cooking\\WebContent\\recipes_image")
 public class RecipesCreateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -44,24 +47,22 @@ public class RecipesCreateServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    //String _token = getParamVal(request.getPart("_token"));
-	    String _token =request.getParameter("_token");
+	    String _token = getParamVal(request.getPart("_token"));
+	    System.out.println(_token);
 	    if(_token!=null && _token.equals(request.getSession().getId())) {
 	        EntityManager em = DBUtil.createEM();
 	        Boolean commit_flag = true;
 
    //材料以外の処理
 	        Recipes r =new Recipes();
-	       /*
+	        Collection<Part> parts = request.getParts();
+
 	        String name=getParamVal(request.getPart("name"));
 	        String how_to=getParamVal(request.getPart("how_to"));
             String time=getParamVal(request.getPart("time"));
             String how_many=getParamVal(request.getPart("how_many"));
-            */
-	        String name=request.getParameter("name");
-            String how_to=request.getParameter("how_to");
-            String time=request.getParameter("time");
-            String how_many=request.getParameter("how_many");
+
+
 
             Timestamp currentTime =new Timestamp(System.currentTimeMillis());
 	        r.setName(name);
@@ -70,12 +71,12 @@ public class RecipesCreateServlet extends HttpServlet {
 	        r.setHow_many(how_many);
 	        r.setCreated_at(currentTime);
 	        r.setUpdated_at(currentTime);
-	        /*
+
 	        Part part = request.getPart("file");
 	        String fileName = extractFileName(part);
 	        part.write(getServletContext().getRealPath("/recipes_image")+"/"+ fileName);
 	        r.setImage_name(fileName);
-            */
+
 
 	        em.getTransaction().begin();
             em.persist(r);
@@ -89,8 +90,8 @@ public class RecipesCreateServlet extends HttpServlet {
                     .getSingleResult();
 
             for(String type: types) {
-                String[] ids=request.getParameterValues(type+"_id");
-                String[] quantities=request.getParameterValues(type+"_quantity");
+                String[] ids=getParamArray(parts,type+"_id");
+                String[] quantities=getParamArray(parts,type+"_quantity");
                 List<String> quantityList =new ArrayList<String>();
                 int count=0;
                 if(ids!=null) {
@@ -170,5 +171,18 @@ public class RecipesCreateServlet extends HttpServlet {
         }
         return fileName;
       }
+
+	// 同名前のパラメータのデータ配列を取得
+    private String[] getParamArray(Collection<Part> parts, String name) {
+        List<String> params = new ArrayList<String>();
+
+        for (Part part : parts) {
+            if (name.equals(part.getName())) {
+                params.add(getParamVal(part));
+            }
+        }
+
+        return params.toArray(new String[params.size()]);
+    }
 
 }
