@@ -31,7 +31,7 @@ import validators.RecipeValidator;
  * Servlet implementation class RecipesCreateServlet
  */
 @WebServlet("/recipes/create")
-@MultipartConfig(maxFileSize = 1048576 , location = "C:\\pleiades\\workspace\\cooking\\WebContent\\recipes_image")
+@MultipartConfig(maxFileSize = 1048576 )
 public class RecipesCreateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

@@ -42,7 +42,7 @@ public class Materials {
     private Timestamp updated_at;
 
     @Column(name="use_limit")
-    private String use_limit;
+    private Integer use_limit;
 
     public Integer getMaterial_id() {
         return material_id;
@@ -92,13 +92,15 @@ public class Materials {
         this.updated_at = updated_at;
     }
 
-    public String getUse_limit() {
+    public Integer getUse_limit() {
         return use_limit;
     }
 
-    public void setUse_limit(String use_limit) {
+    public void setUse_limit(Integer use_limit) {
         this.use_limit = use_limit;
     }
+
+
 
 
 

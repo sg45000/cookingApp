@@ -48,7 +48,7 @@ public class MaterialsCreateServlet extends HttpServlet {
             m.setUnit(unit);
             String type = request.getParameter("type");
             m.setType(type);
-            String use_limit=request.getParameter("use_limit");
+            Integer use_limit=Integer.parseInt(request.getParameter("use_limit"));
             m.setUse_limit(use_limit);
 
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());

@@ -19,7 +19,14 @@
         </c:forEach>
     </select>
     <label for="use_limit">消費期限</label>
-    <input type="text" name="use_limit" value="${use_limit}">
+     <select name="use_limit">
+        <c:forEach var="i" begin="1" step="1" end="60" >
+            <option value="${i}">${i}日間</option>
+        </c:forEach>
+        <option value="90">90日間</option>
+        <option value="180">180日間</option>
+        <option value="360">360日間</option>
+    </select>
     <input type="hidden" name="_token" value="${_token}">
     <button type="submit">登録</button>
 </div>
